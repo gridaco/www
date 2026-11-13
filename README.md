@@ -27,6 +27,8 @@ The parent’s existing proxy and maintenance behavior still applies to requests
 
 There is no game runtime, copied Grida header/footer, shared runtime UI package, CDN provisioning, or production content refinement in this initial setup.
 
+The parent’s `/index` GET route handler, after tenant host routing, and the child’s Next.js configuration each return the same temporary 307 redirect; an external rewrite would follow the child’s redirect. Publishing a collection at `/index` requires removing the child redirect and removing the parent handler in a separate parent PR; descendant rewrites still preserve `/index` and the `/index/canvas` exception.
+
 ## Deployment
 
 The Vercel project for WWW Index is `grida-www-index`, with Root Directory `www` and Node.js 26 (Lithium LTS). Pushes to `main` deploy automatically to the [production upstream](https://grida-www-index.vercel.app/index/games). Public canonicals remain on `grida.co`.
