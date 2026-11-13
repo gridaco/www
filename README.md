@@ -1,8 +1,8 @@
-# Grida WWW
+# Grida WWW Index
 
 Public, authored Grida pages: launches, presentations, demos, showcases, and other marketing experiences that need their own composition and release cycle.
 
-This repository owns the new `https://grida.co/index` subtree. Its scope follows the public experience rather than a particular product or industry; a page may introduce Grida FX today and a broader Grida workflow later.
+The WWW Index surface owns the new `https://grida.co/index` subtree. Its source repository remains `gridaco/www`, with the application in top-level `www/`. Its scope follows the public experience rather than a particular product or industry; a page may introduce Grida FX today and a broader Grida workflow later.
 
 ## Ownership and routing
 
@@ -29,7 +29,9 @@ There is no game runtime, copied Grida header/footer, shared runtime UI package,
 
 ## Deployment
 
-The Grida Vercel project is `grida-www`, with Root Directory `www` and Node.js 24. Pushes to `main` deploy automatically to the [production upstream](https://grida-www.vercel.app/index/games). Public canonicals remain on `grida.co`.
+The Vercel project for WWW Index is `grida-www-index`, with Root Directory `www` and Node.js 26 (Lithium LTS). Pushes to `main` deploy automatically to the [production upstream](https://grida-www-index.vercel.app/index/games). Public canonicals remain on `grida.co`.
+
+The parent uses `WWW_INDEX_URL`, configured by `NEXT_PUBLIC_WWW_INDEX_URL`, for this upstream origin. The production value is `https://grida-www-index.vercel.app`, without `/index`; the parent rewrites preserve the public base path.
 
 The [parent integration PR](https://github.com/gridaco/grida/pull/1141) is the initial public routing activation step. Until it is merged, verify the site through its standalone deployment. Roll back public integration by reverting the parent routing change before retiring this deployment.
 
@@ -37,7 +39,16 @@ The previous `gridaco/grida.co` repository was renamed to `gridaco/www`. Its his
 
 ## Develop
 
-Use Node.js 24 and pnpm 11.5.2. The repository root holds the pnpm workspace and Turborepo configuration, with one application in the top-level `www/` directory. The Vercel project’s Root Directory is `www`.
+Use Node.js 26 (Lithium LTS) and pnpm 11.5.2. The repository root holds the pnpm workspace and Turborepo configuration, with one application in the top-level `www/` directory. The Vercel project’s Root Directory is `www`.
+
+With nvm, select the version in `.nvmrc` from the repository root:
+
+```sh
+nvm install
+nvm use
+```
+
+If pnpm 11.5.2 is not available after selecting Node.js, install it separately with `npm install --global pnpm@11.5.2`. An existing matching pnpm installation can be reused.
 
 ```sh
 pnpm install
@@ -53,12 +64,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for checks, page conventions, and the cro
 
 [`www/site.config.ts`](www/site.config.ts) exports the `site` object and is the authority for the site identity, URL helpers, and page registry. Keep these values distinct:
 
-| Value                                   | Purpose                                                               |
-| --------------------------------------- | --------------------------------------------------------------------- |
-| `https://grida.co`                      | Canonical public origin used in metadata and public links.            |
-| `/index`                                | Native Next.js `basePath`, with `trailingSlash: false`.               |
-| The production Vercel deployment origin | Upstream target for the parent rewrite, not the public canonical URL. |
-| The local server origin                 | Development and verification, not published metadata.                 |
+| Value                                | Purpose                                                                         |
+| ------------------------------------ | ------------------------------------------------------------------------------- |
+| `https://grida.co`                   | Canonical public origin used in metadata and public links.                      |
+| `/index`                             | Native Next.js `basePath`, with `trailingSlash: false`.                         |
+| `https://grida-www-index.vercel.app` | WWW Index upstream target for the parent rewrite, not the public canonical URL. |
+| The local server origin              | Development and verification, not published metadata.                           |
 
 Next.js applies `basePath` to its routing, assets, and supported link helpers. It does not construct correct metadata, prefix every literal URL, or decide which links belong to the parent. Use the site configuration for those decisions.
 

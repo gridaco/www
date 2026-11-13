@@ -1,10 +1,10 @@
 # Contributing
 
-This repository holds public Grida experiences. Start with [README.md](README.md) for route ownership and the initial setup’s limitations, and read the [publish-page skill](.agents/skills/publish-page/SKILL.md) when changing a page’s content, location, or publication status.
+This repository holds public Grida experiences on the WWW Index surface. The repository remains `gridaco/www` and the application stays in `www/`; the deployed Vercel project is `grida-www-index`. Start with [README.md](README.md) for route ownership and the initial setup’s limitations, and read the [publish-page skill](.agents/skills/publish-page/SKILL.md) when changing a page’s content, location, or publication status.
 
 ## Local work
 
-Use Node.js 24 and the pinned pnpm 11.5.2 release. Run commands from the repository root:
+Use Node.js 26 (Lithium LTS) and the pinned pnpm 11.5.2 release. From the repository root, `nvm install` and `nvm use` read `.nvmrc`. If pnpm 11.5.2 is absent after switching Node.js, install it separately with `npm install --global pnpm@11.5.2`; an existing matching installation can be reused. Run the workspace commands from the repository root:
 
 ```sh
 pnpm install
@@ -25,7 +25,7 @@ pnpm typecheck
 
 The development app serves its native `/index` base path at `http://127.0.0.1:3100`. Use `/index/games` to inspect the setup page. Check both a direct child deployment and the parent rewrite when a change affects public routing; a successful build alone does not verify ingress.
 
-After a build, `pnpm --filter @grida/www start` serves the local production app.
+After a build, `pnpm --filter @grida/www-index start` serves the local production app.
 
 ## Pages and code
 

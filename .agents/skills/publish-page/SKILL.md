@@ -1,16 +1,16 @@
 ---
 name: publish-page
-description: Add, change, move, remove, or publish authored Grida website pages in gridaco/www, including metadata, discovery, and the separate parent-site routing handoff.
+description: Add, change, move, remove, or publish authored Grida WWW Index pages in gridaco/www, including metadata, discovery, and the separate parent-site routing handoff.
 ---
 
-# Publish a Grida page
+# Publish a Grida WWW Index page
 
-This repository owns authored public experiences under `/index`. Read the repository README and CONTRIBUTING guide for the current topology. The application lives in top-level `www/`, which is also the Vercel project’s Root Directory; workspace and Turborepo commands run from the repository root. Use `www/site.config.ts` as the authority for the `site` object, page registry, and URL helpers; inspect its current API before editing consumers.
+WWW Index owns authored public experiences under `/index`. Its source repository remains `gridaco/www`; its Vercel project is `grida-www-index`. Read the repository README and CONTRIBUTING guide for the current topology. The application lives in top-level `www/`, which is also the Vercel project’s Root Directory; workspace and Turborepo commands run from the repository root. Use `www/site.config.ts` as the authority for the `site` object, page registry, and URL helpers; inspect its current API before editing consumers.
 
 ## Keep URL ownership explicit
 
 - The canonical public origin is `https://grida.co`; the child app uses native Next.js `basePath: "/index"` and `trailingSlash: false`.
-- A Vercel deployment origin is the upstream host, and a local origin is for development. Neither becomes the canonical URL.
+- The production upstream origin is `https://grida-www-index.vercel.app`; a local origin is for development. Neither becomes the canonical URL. The parent’s `WWW_INDEX_URL` reads `NEXT_PUBLIC_WWW_INDEX_URL` as an origin without `/index`; preserve `/index` exactly once in rewritten paths.
 - Next.js base-path handling does not supply correct metadata or parent links automatically. Use the site helpers and registry, keep child paths prefixed once, and link to other applications through their canonical public URLs.
 - Existing `/index/canvas` and its descendants stay parent-owned. `/fx` stays with [gridaco/fx](https://github.com/gridaco/fx/tree/main/www).
 - Do not use the authenticated editor’s `host/url.ts` or universal auth aliases for marketing URLs. Requests through `grida.co` still pass through the parent’s proxy and maintenance behavior.
