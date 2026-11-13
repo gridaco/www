@@ -16,7 +16,7 @@ The WWW Index surface owns the new `https://grida.co/index` subtree. Its source 
 
 The public URL, Git repository, web deployment, and artifact storage are separate decisions. Adding a page here does not move its originating project into this repository. Future game builds and media can use manually curated CDN releases; this scaffold provisions no bucket or publishing pipeline.
 
-The parent’s existing proxy and maintenance behavior still applies to requests through `grida.co`. This site does not bypass that ingress or use the authenticated editor’s host and universal-route helpers.
+Forwarded publication requests still pass through the parent’s existing proxy and maintenance behavior. This site does not bypass that ingress or use the authenticated editor’s host and universal-route helpers.
 
 ## Current state
 
@@ -27,7 +27,7 @@ The parent’s existing proxy and maintenance behavior still applies to requests
 
 There is no game runtime, copied Grida header/footer, shared runtime UI package, CDN provisioning, or production content refinement in this initial setup.
 
-The parent’s `/index` GET route handler, after tenant host routing, and the child’s Next.js configuration each return the same temporary 307 redirect; an external rewrite would follow the child’s redirect. Publishing a collection at `/index` requires removing the child redirect and removing the parent handler in a separate parent PR; descendant rewrites still preserve `/index` and the `/index/canvas` exception.
+The parent redirects exact `/index` in early routing for its canonical, exact Vercel preview/branch, and local app hosts, before Next.js normalizes that path to `/`. Tenant/custom-domain hosts retain their own `/index` pages. The child keeps a matching temporary 307 for standalone access. Publishing a collection at `/index` requires removing the child redirect and replacing the parent redirect with an early, host-scoped base-path rewrite in a separate parent PR; descendant rewrites still preserve `/index` and the `/index/canvas` exception.
 
 ## Deployment
 
