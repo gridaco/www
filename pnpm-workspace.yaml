@@ -1,0 +1,7 @@
+packages:
+  - apps/*
+
+allowBuilds:
+  # Hooks are installed explicitly with pnpm hooks:install.
+  lefthook: false
+  sharp: true
