@@ -27,6 +27,14 @@ The parent’s existing proxy and maintenance behavior still applies to requests
 
 There is no game runtime, copied Grida header/footer, shared runtime UI package, CDN provisioning, or production content refinement in this initial setup.
 
+## Deployment
+
+The Grida Vercel project is `grida-www`, with Root Directory `www` and Node.js 24. Pushes to `main` deploy automatically to the [production upstream](https://grida-www.vercel.app/index/games). Public canonicals remain on `grida.co`.
+
+The [parent integration PR](https://github.com/gridaco/grida/pull/1141) is the initial public routing activation step. Until it is merged, verify the site through its standalone deployment. Roll back public integration by reverting the parent routing change before retiring this deployment.
+
+The previous `gridaco/grida.co` repository was renamed to `gridaco/www`. Its historical main branch is preserved as `snapshot/pre-www-2026-11-13`; the current `main` begins with a fresh root commit.
+
 ## Develop
 
 Use Node.js 24 and pnpm 11.5.2. The repository root holds the pnpm workspace and Turborepo configuration, with one application in the top-level `www/` directory. The Vercel project’s Root Directory is `www`.
