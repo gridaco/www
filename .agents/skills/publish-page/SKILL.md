@@ -5,7 +5,7 @@ description: Add, change, move, remove, or publish authored Grida WWW Index page
 
 # Publish a Grida WWW Index page
 
-WWW Index owns authored public experiences under `/index`. Its source repository remains `gridaco/www`; its Vercel project is `grida-www-index`. Read the repository README and CONTRIBUTING guide for the current topology. The application lives in top-level `www/`, which is also the Vercel project’s Root Directory; workspace and Turborepo commands run from the repository root. Use `www/site.config.ts` as the authority for the `site` object, page registry, and URL helpers; inspect its current API before editing consumers.
+WWW Index owns authored public experiences under `/index`. Its source repository remains `gridaco/www`; its Vercel project is `grida-www-index`. Read [CONTRIBUTING.md](../../../CONTRIBUTING.md) for the current topology, setup, and release conventions. The application lives in top-level `www/`, which is also the Vercel project’s Root Directory; workspace and Turborepo commands run from the repository root. Use `www/site.config.ts` as the authority for the `site` object, page registry, and URL helpers; inspect its current API before editing consumers.
 
 ## Keep URL ownership explicit
 

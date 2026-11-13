@@ -1,6 +1,30 @@
 # Contributing
 
-This repository holds public Grida experiences on the WWW Index surface. The repository remains `gridaco/www` and the application stays in `www/`; the deployed Vercel project is `grida-www-index`. Start with [README.md](README.md) for route ownership and the initial setup’s limitations, and read the [publish-page skill](.agents/skills/publish-page/SKILL.md) when changing a page’s content, location, or publication status.
+This repository owns authored Grida pages: launches, presentations, demos, showcases, and other marketing experiences with their own composition and release cycle. Pages can evolve across products and industries. Read the [publish-page skill](.agents/skills/publish-page/SKILL.md) when changing a page’s content, location, or publication status.
+
+## Ownership and routing
+
+| Surface                                      | Owner                                                         | Delivery                                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `grida.co` and existing public routes        | [gridaco/grida](https://github.com/gridaco/grida)             | The parent Next.js app receives requests and owns the ingress configuration.                           |
+| New `/index` pages                           | This repository, `gridaco/www`                                | The `grida-www-index` Vercel project, reached through parent rewrites that preserve `/index`.          |
+| Existing `/index/canvas` and its descendants | [gridaco/grida](https://github.com/gridaco/grida)             | Explicitly retained by the parent; the new subtree does not transfer this existing route.              |
+| `/fx`                                        | [gridaco/fx](https://github.com/gridaco/fx/tree/main/www)     | FX keeps its own website and deployment.                                                               |
+| Game source and generated showcase artifacts | Their authoring repositories and separately published storage | A page consumes a selected release; publishing or building the page does not generate new game assets. |
+
+The public URL, source repository, deployment, and artifact storage have separate owners. Adding a page here does not move its originating project into this repository. Forwarded requests still pass through the parent’s proxy and maintenance behavior. Do not import the authenticated editor’s `host/url.ts` or use universal auth aliases for marketing links.
+
+## Current setup
+
+- `/index` temporarily redirects to `https://grida.co/home` with HTTP 307, including during local development.
+- `/index/games` is an almost blank placeholder: `noindex`, unadvertised, and absent from the sitemap.
+- `/index/sitemap.xml` contains no entries. The parent’s `/robots.txt` owns crawl policy; there is no child robots route.
+- The [parent integration draft PR](https://github.com/gridaco/grida/pull/1141) activates the public subtree when merged. Until then, verify through the [standalone deployment](https://grida-www-index.vercel.app/index/games).
+- This scaffold provisions no game runtime, CDN bucket, or artifact publishing pipeline. Actual page design and production content are separate work.
+
+The parent redirects exact `/index` in early routing for its canonical, exact Vercel preview/branch, and local app hosts, before Next.js normalizes that path to `/`. Tenant/custom-domain hosts retain their own `/index` pages. The child keeps a matching temporary 307 for standalone access.
+
+Publishing a collection at `/index` requires removing the child redirect and replacing the parent redirect with an early, host-scoped exact-base-path rewrite in a separate parent PR. Preserve descendant rewrites and the `/index/canvas` exception.
 
 ## Local work
 
@@ -23,7 +47,7 @@ pnpm lint
 pnpm typecheck
 ```
 
-The development app serves its native `/index` base path at `http://127.0.0.1:3100`. Use `/index/games` to inspect the setup page. Check both a direct child deployment and the parent rewrite when a change affects public routing; a successful build alone does not verify ingress.
+Open [http://127.0.0.1:3100/index/games](http://127.0.0.1:3100/index/games) to inspect the setup page. This scaffold needs no environment file. Check both a direct child deployment and the parent rewrite when a change affects public routing; a successful build alone does not verify ingress.
 
 After a build, `pnpm --filter @grida/www-index start` serves the local production app.
 
@@ -31,13 +55,22 @@ After a build, `pnpm --filter @grida/www-index start` serves the local productio
 
 The Next.js application lives in the top-level `www/` directory; workspace and Turborepo commands run from the repository root. Set the Vercel project’s Root Directory to `www`. Keep a page’s authored composition close to its route and extract shared components when actual pages need them. Add game dependencies only for a decided demonstration, rather than making the initial website depend on a game engine or generator.
 
-Use the `site` object in [`www/site.config.ts`](www/site.config.ts) for page registration, metadata, public paths, and parent links. Update its registry when adding, moving, removing, or changing the indexability of a page. A route file, its canonical URL, and its sitemap entry must describe the same public page.
+## URL configuration
+
+[`www/site.config.ts`](www/site.config.ts) exports the `site` object and owns site identity, page registration, metadata URLs, and parent links. Keep these values distinct:
+
+| Value                                | Purpose                                                    |
+| ------------------------------------ | ---------------------------------------------------------- |
+| `https://grida.co`                   | Canonical public origin used in metadata and public links. |
+| `/index`                             | Native Next.js `basePath`, with `trailingSlash: false`.    |
+| `https://grida-www-index.vercel.app` | Upstream origin for the parent rewrite, without `/index`.  |
+| The local server origin              | Development and verification, not published metadata.      |
+
+The parent’s `WWW_INDEX_URL` reads `NEXT_PUBLIC_WWW_INDEX_URL` to select the upstream origin. Rewrites preserve `/index` exactly once. Next.js handles the base path for its routes, assets, and supported link helpers; metadata and literal URLs still need deliberate configuration.
+
+Update the site registry when adding, moving, removing, or changing the indexability of a page. A route file, its canonical URL, and its sitemap entry must describe the same public page.
 
 Register an indexable page as `{ path: "/games" }` in `site.publications`, use `site.url("/games")` for its canonical URL, and derive its `robots.index` value from `site.isPublished("/games")`. The sitemap reads the same registry. Use `site.homeUrl` for the parent home link. The root metadata defaults to `noindex`; a real page must set its own metadata deliberately.
-
-Authored website code can deploy automatically without rebuilding or regenerating the artifacts it presents. Keep generated runs, heavyweight game builds, and working recordings in their originating workflow or artifact storage. Reference selected published outputs; a future CDN publishing process should preserve that manual curation boundary.
-
-The initial scaffold deliberately has minimal styling. It does not copy the main site’s header/footer or establish a shared runtime design package. Design each experience for its reader while keeping first-party navigation recognizable and accurate.
 
 ## Links and metadata
 
@@ -50,10 +83,22 @@ The initial scaffold deliberately has minimal styling. It does not copy the main
 
 The setup games page stays unadvertised and excluded from the child sitemap. Once indexable pages exist, the parent’s root robots file must discover the child sitemap. This application has no separate robots route; a nested `/index/robots.txt` would not configure crawling for the whole host.
 
-## Cross-repository release
+## Deployment and cross-repository release
+
+Pushes to `main` deploy automatically through Vercel’s Git integration. The `grida-www-index` project uses Root Directory `www` and Node.js 26 (Lithium LTS), serving `https://grida-www-index.vercel.app`. Public canonicals remain on `grida.co`.
 
 Website content and Vercel deployment configuration belong here. Public ingress and main-site discovery belong in [gridaco/grida](https://github.com/gridaco/grida). Keep parent changes in a separate PR, linked from the website PR or handoff where relevant. Use the [publish-page skill](.agents/skills/publish-page/SKILL.md) to identify the owning parent files; it distinguishes navigation data from XML sitemap generation.
 
-The initial parent draft PR is the activation step for this subtree. Keep the existing `/index/canvas` family parent-owned. After activation, ordinary page edits deploy from this repository automatically; changes to parent navigation, redirects, ownership, or sitemap discovery still require their own parent PR.
+After activation, ordinary page edits deploy from this repository independently. Changes to parent navigation, redirects, ownership, or sitemap discovery still require their own parent PR. Roll back public integration by reverting the parent routing change before retiring this deployment.
+
+Authored website code deploys without rebuilding or regenerating the artifacts it presents. Keep generated runs, heavyweight game builds, and working recordings in their originating workflow or artifact storage. Reference selected published outputs; a future CDN publishing process should preserve that manual curation boundary.
+
+The initial scaffold has minimal styling. It does not copy the main site’s header/footer or establish a shared runtime design package. Design each experience for its reader while keeping first-party navigation recognizable and accurate.
 
 Before handing off a page, report its public route, indexability, deployment result, artifact dependencies, and any remaining parent PR. For a move or removal, account for incoming links and redirects as well as the child route. Do not describe a child deployment as publicly activated while the required parent change is unmerged.
+
+## Repository history and licensing
+
+`gridaco/grida.co` was renamed to `gridaco/www`. Its historical main branch is preserved as `snapshot/pre-www-2026-11-13`; the current `main` begins with a fresh root commit.
+
+Source code is licensed under [Apache-2.0](LICENSE). Referenced media and game artifacts retain their own rights and publication records.

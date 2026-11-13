@@ -1,6 +1,6 @@
 # Grida WWW Index
 
-Read [README.md](README.md) and [CONTRIBUTING.md](CONTRIBUTING.md) before changing the site. Check for a nearer `README.md` or `AGENTS.md` when entering an unfamiliar directory.
+Read [README.md](README.md) for the public introduction and [CONTRIBUTING.md](CONTRIBUTING.md) for topology, setup, and release conventions before changing the site. Check for a nearer `README.md` or `AGENTS.md` when entering an unfamiliar directory.
 
 - WWW Index owns authored public Grida experiences in the new `/index` subtree. The repository remains `gridaco/www`; the Vercel project is `grida-www-index`. It is not tied to a single product or business framing. Existing `/index/canvas` routes remain in the parent repository; FX keeps `/fx`.
 - The application lives in top-level `www/`; Vercel’s Root Directory is `www`, while workspace and Turborepo commands run from the repository root. `www/site.config.ts` owns the `site` object, page registry, and URL helpers. Keep canonical `https://grida.co`, native `/index`, Vercel upstream, and local origins distinct.
