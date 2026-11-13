@@ -10,5 +10,6 @@ Read [README.md](README.md) for the public introduction and [CONTRIBUTING.md](CO
 - Do not import the authenticated editor’s `host/url.ts` or route public marketing through universal auth aliases. The parent’s proxy and maintenance behavior continues to apply.
 - Parent ingress uses `WWW_INDEX_URL` / `NEXT_PUBLIC_WWW_INDEX_URL` for `https://grida-www-index.vercel.app`, without the `/index` path. Public canonical URLs stay on `https://grida.co/index`.
 - Do not copy the parent header/footer or introduce a shared runtime UI package as incidental setup work.
+- Reuse the local Grida logo, favicon, and symbol/wordmark assets; [CONTRIBUTING.md](CONTRIBUTING.md#brand-assets) records their sources and base-path conventions. Keep copied artwork aligned with Grida rather than redrawing it.
 - Run the root typecheck, lint, and build commands appropriate to the change. Validate the served `/index` paths when editing routing or metadata.
 - In committed docs, use public GitHub `main` links for cross-repository references. Do not include machine-specific paths or private operational data.

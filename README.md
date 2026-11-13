@@ -1,3 +1,5 @@
+<img src="./.readme/cover.png" alt="Grida" width="100%"/>
+
 # Grida Index
 
 **Explore what you can make with Grida.**

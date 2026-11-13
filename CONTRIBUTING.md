@@ -55,6 +55,19 @@ After a build, `pnpm --filter @grida/www-index start` serves the local productio
 
 The Next.js application lives in the top-level `www/` directory; workspace and Turborepo commands run from the repository root. Set the Vercel project’s Root Directory to `www`. Keep a page’s authored composition close to its route and extract shared components when actual pages need them. Add game dependencies only for a decided demonstration, rather than making the initial website depend on a game engine or generator.
 
+## Brand assets
+
+Use the existing Grida artwork rather than redrawing it:
+
+- [`www/public/brand/`](www/public/brand/) contains the symbol and wordmark in SVG and PNG. Files ending in `-dark` are white artwork for dark backgrounds; the other files contain black artwork.
+- [`GridaLogo`](www/components/grida-logo.tsx) is the inline React symbol. It uses `currentColor`, accepts native SVG props and a `size` (default 24), and has the accessible name “Grida”. Set `aria-hidden` when adjacent text or the containing link already names the brand.
+- [`www/app/icon.png`](www/app/icon.png) supplies the browser favicon through Next.js’s metadata file convention, including the `/index` prefix. The source favicon is PNG data despite its `.ico` filename; keep the correct PNG extension here.
+- [`.readme/cover.png`](.readme/cover.png) is the repository cover.
+
+These are local copies from [Grida’s public brand assets](https://github.com/gridaco/grida/tree/main/editor/public/brand), [logo component](https://github.com/gridaco/grida/blob/main/packages/grida-react-icons/src/logos/grida.tsx), [favicon](https://github.com/gridaco/grida/blob/main/editor/app/favicon.ico), and [README cover](https://github.com/gridaco/grida/blob/main/.readme/cover.png). Keep them aligned with the source when the brand changes. They require no private package dependency or remote asset host.
+
+Static brand URLs include the base path: for example, `/index/brand/grida-wordmark-400.svg`. Use `site.url("/brand/grida-wordmark-400.svg")` when an absolute public URL is needed. Choose the contrasting artwork and provide alt text when using an image.
+
 ## URL configuration
 
 [`www/site.config.ts`](www/site.config.ts) exports the `site` object and owns site identity, page registration, metadata URLs, and parent links. Keep these values distinct:
