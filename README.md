@@ -9,7 +9,7 @@ This repository owns the new `https://grida.co/index` subtree. Its scope follows
 | Surface                                      | Owner                                                         | Delivery                                                                                               |
 | -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `grida.co` and existing public routes        | [gridaco/grida](https://github.com/gridaco/grida)             | The parent Next.js app receives requests and owns the ingress configuration.                           |
-| New `/index` pages                           | This repository, `apps/www`                                   | An independent Vercel deployment, reached through parent rewrites that preserve `/index`.              |
+| New `/index` pages                           | This repository, `www`                                        | An independent Vercel deployment, reached through parent rewrites that preserve `/index`.              |
 | Existing `/index/canvas` and its descendants | [gridaco/grida](https://github.com/gridaco/grida)             | Explicitly retained by the parent; the new subtree does not transfer this existing route.              |
 | `/fx`                                        | [gridaco/fx](https://github.com/gridaco/fx/tree/main/www)     | FX keeps its own website and deployment.                                                               |
 | Game source and generated showcase artifacts | Their authoring repositories and separately published storage | A page consumes a selected release; publishing or building the page does not generate new game assets. |
@@ -29,7 +29,7 @@ There is no game runtime, copied Grida header/footer, shared runtime UI package,
 
 ## Develop
 
-Use Node.js 24 and pnpm 11.5.2. The repository uses a pnpm workspace and Turborepo, with one application in `apps/www`.
+Use Node.js 24 and pnpm 11.5.2. The repository root holds the pnpm workspace and Turborepo configuration, with one application in the top-level `www/` directory. The Vercel project’s Root Directory is `www`.
 
 ```sh
 pnpm install
@@ -43,7 +43,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for checks, page conventions, and the cro
 
 ## URL configuration
 
-[`apps/www/site.config.ts`](apps/www/site.config.ts) exports the `site` object and is the authority for the site identity, URL helpers, and page registry. Keep these values distinct:
+[`www/site.config.ts`](www/site.config.ts) exports the `site` object and is the authority for the site identity, URL helpers, and page registry. Keep these values distinct:
 
 | Value                                   | Purpose                                                               |
 | --------------------------------------- | --------------------------------------------------------------------- |

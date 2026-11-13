@@ -3,7 +3,7 @@
 Read [README.md](README.md) and [CONTRIBUTING.md](CONTRIBUTING.md) before changing the site. Check for a nearer `README.md` or `AGENTS.md` when entering an unfamiliar directory.
 
 - This repository owns authored public Grida experiences in the new `/index` subtree. It is not tied to a single product or business framing. Existing `/index/canvas` routes remain in the parent repository; FX keeps `/fx`.
-- `apps/www/site.config.ts` owns the `site` object, page registry, and URL helpers. Keep canonical `https://grida.co`, native `/index`, Vercel upstream, and local origins distinct.
+- The application lives in top-level `www/`; Vercel’s Root Directory is `www`, while workspace and Turborepo commands run from the repository root. `www/site.config.ts` owns the `site` object, page registry, and URL helpers. Keep canonical `https://grida.co`, native `/index`, Vercel upstream, and local origins distinct.
 - Apply [publish-page](.agents/skills/publish-page/SKILL.md) when adding, changing, moving, removing, or publishing a page. Public ingress and main-site discovery changes belong in a separate [gridaco/grida](https://github.com/gridaco/grida) PR.
 - Keep the setup `/index/games` placeholder `noindex`, out of navigation and the sitemap until it contains publishable content. `/index` uses a temporary 307 redirect to `https://grida.co/home`.
 - Preserve manually curated artifact publication. Website builds do not generate game assets or provision a CDN. Source projects and large artifacts retain their own owners.

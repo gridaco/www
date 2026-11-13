@@ -5,7 +5,7 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "lint": "oxlint --deny-warnings apps",
+    "lint": "oxlint --deny-warnings www",
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt --check .",
     "check": "pnpm fmt:check && pnpm lint && pnpm typecheck",

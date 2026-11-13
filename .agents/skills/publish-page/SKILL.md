@@ -5,7 +5,7 @@ description: Add, change, move, remove, or publish authored Grida website pages 
 
 # Publish a Grida page
 
-This repository owns authored public experiences under `/index`. Read the repository README and CONTRIBUTING guide for the current topology. Use `apps/www/site.config.ts` as the authority for the `site` object, page registry, and URL helpers; inspect its current API before editing consumers.
+This repository owns authored public experiences under `/index`. Read the repository README and CONTRIBUTING guide for the current topology. The application lives in top-level `www/`, which is also the Vercel project’s Root Directory; workspace and Turborepo commands run from the repository root. Use `www/site.config.ts` as the authority for the `site` object, page registry, and URL helpers; inspect its current API before editing consumers.
 
 ## Keep URL ownership explicit
 

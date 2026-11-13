@@ -21,7 +21,7 @@ importers:
         specifier: 2.11.11
         version: 2.11.11
 
-  apps/www:
+  www:
     dependencies:
       next:
         specifier: 16.4.6

@@ -29,9 +29,9 @@ After a build, `pnpm --filter @grida/www start` serves the local production app.
 
 ## Pages and code
 
-The Next.js application lives in `apps/www`. Keep a page’s authored composition close to its route and extract shared components when actual pages need them. Add game dependencies only for a decided demonstration, rather than making the initial website depend on a game engine or generator.
+The Next.js application lives in the top-level `www/` directory; workspace and Turborepo commands run from the repository root. Set the Vercel project’s Root Directory to `www`. Keep a page’s authored composition close to its route and extract shared components when actual pages need them. Add game dependencies only for a decided demonstration, rather than making the initial website depend on a game engine or generator.
 
-Use the `site` object in [`apps/www/site.config.ts`](apps/www/site.config.ts) for page registration, metadata, public paths, and parent links. Update its registry when adding, moving, removing, or changing the indexability of a page. A route file, its canonical URL, and its sitemap entry must describe the same public page.
+Use the `site` object in [`www/site.config.ts`](www/site.config.ts) for page registration, metadata, public paths, and parent links. Update its registry when adding, moving, removing, or changing the indexability of a page. A route file, its canonical URL, and its sitemap entry must describe the same public page.
 
 Register an indexable page as `{ path: "/games" }` in `site.publications`, use `site.url("/games")` for its canonical URL, and derive its `robots.index` value from `site.isPublished("/games")`. The sitemap reads the same registry. Use `site.homeUrl` for the parent home link. The root metadata defaults to `noindex`; a real page must set its own metadata deliberately.
 
